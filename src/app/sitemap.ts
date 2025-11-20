@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...outages.map((slug) => ({
       url: `${baseUrl}/outages/${slug}`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
   ];
