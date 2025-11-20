@@ -1,23 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SimulationCanvas } from "@/components/simulation/SimulationCanvas";
 import { StepController } from "@/components/simulation/StepController";
 import { StepIndicator } from "@/components/simulation/StepIndicator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { cloudflareOutageData } from "@/data/outages/cloudflare-nov-2025";
 
 export default function CloudflareOutagePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const totalSteps = cloudflareOutageData.steps.length;
 
   // Auto-play functionality
@@ -68,117 +61,120 @@ export default function CloudflareOutagePage() {
   const { metadata } = cloudflareOutageData;
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-7xl">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-4xl font-bold">{metadata.provider} Outage</h1>
-          <Badge
-            variant={
-              metadata.severity === "critical" ? "destructive" : "default"
-            }
-          >
-            {metadata.severity}
-          </Badge>
-        </div>
-        <p className="text-muted-foreground text-lg">{metadata.date}</p>
-        <p className="text-muted-foreground mt-2">{metadata.summary}</p>
-      </div>
+    <div className="flex min-h-screen relative">
+      {/* Overlay when sidebar is open */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-30"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
 
-      <Separator className="my-6" />
+      {/* Collapsible Sidebar */}
+      <aside
+        className={`fixed left-0 top-0 h-full bg-background border-r-2 border-foreground z-40 transition-transform duration-300 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{ width: "320px" }}
+      >
+        <div className="h-full overflow-y-auto p-4">
+          <div className="flex items-center justify-between mb-4 border-b-2 border-foreground pb-3">
+            <div className="text-sm font-bold font-mono">TIMELINE</div>
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="border-2 border-foreground p-1 hover:bg-muted transition-colors"
+              aria-label="Close timeline"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+          </div>
+          <StepIndicator
+            steps={cloudflareOutageData.steps.map((step) => ({
+              title: step.title,
+              description: step.timestamp,
+            }))}
+            currentStep={currentStep}
+            onStepClick={handleStepClick}
+          />
+        </div>
+      </aside>
 
       {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Simulation Canvas - Takes 2 columns */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>{currentStepData.title}</CardTitle>
-              <CardDescription>
-                {currentStepData.description}
-                {currentStepData.timestamp && (
-                  <span className="ml-2 text-xs">
-                    ({currentStepData.timestamp})
-                  </span>
-                )}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <SimulationCanvas
-                  step={currentStepData}
-                  width={1000}
-                  height={600}
-                />
-              </div>
-            </CardContent>
-          </Card>
+      <div
+        className={`flex-1 transition-all duration-300 ${
+          isSidebarOpen ? "ml-0" : "ml-0"
+        }`}
+      >
+        <div className="container mx-auto py-8 px-4 max-w-7xl">
+          {/* Sidebar Toggle Button */}
+          {!isSidebarOpen && (
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="fixed left-4 top-1/2 -translate-y-1/2 z-30 border-2 border-foreground bg-background p-2 hover:bg-muted transition-colors"
+              aria-label="Open timeline"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          )}
 
-          {/* Step Controller */}
-          <div className="mt-4 flex justify-center">
-            <StepController
-              currentStep={currentStep}
-              totalSteps={totalSteps}
-              isPlaying={isPlaying}
-              onPlay={handlePlay}
-              onPause={handlePause}
-              onPrevious={handlePrevious}
-              onNext={handleNext}
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-4xl font-bold">
+                {metadata.provider.toUpperCase()} OUTAGE
+              </h1>
+              <div className="text-xs font-mono border-2 border-foreground px-2 py-1">
+                {metadata.severity.toUpperCase()}
+              </div>
+            </div>
+            <p className="text-muted-foreground text-sm font-mono mb-2">
+              {metadata.date}
+            </p>
+            <p className="text-sm text-muted-foreground font-mono">
+              {metadata.summary}
+            </p>
+          </div>
+
+          {/* Compact Step Controller at Top */}
+          <div className="mb-6 border-2 border-foreground p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-4">
+                <div className="text-xs font-mono">
+                  STEP {currentStep + 1}/{totalSteps}
+                </div>
+                <div className="text-sm font-bold font-mono">
+                  {currentStepData.title}
+                </div>
+                {currentStepData.timestamp && (
+                  <div className="text-xs text-muted-foreground font-mono">
+                    {currentStepData.timestamp}
+                  </div>
+                )}
+              </div>
+              <StepController
+                currentStep={currentStep}
+                totalSteps={totalSteps}
+                isPlaying={isPlaying}
+                onPlay={handlePlay}
+                onPause={handlePause}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+              />
+            </div>
+            <div className="text-xs text-muted-foreground font-mono">
+              {currentStepData.description}
+            </div>
+          </div>
+
+          {/* Full Canvas - Main Focus */}
+          <div className="mb-6 w-full">
+            <SimulationCanvas
+              step={currentStepData}
+              width={1000}
+              height={550}
+              className="w-full"
             />
           </div>
-        </div>
-
-        {/* Step Indicator - Takes 1 column */}
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Timeline</CardTitle>
-              <CardDescription>Step-by-step progression</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <StepIndicator
-                steps={cloudflareOutageData.steps.map((step) => ({
-                  title: step.title,
-                  description: step.timestamp,
-                }))}
-                currentStep={currentStep}
-                onStepClick={handleStepClick}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Outage Details */}
-          <Card className="mt-4">
-            <CardHeader>
-              <CardTitle>Outage Details</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <div className="text-sm font-semibold mb-1">Duration</div>
-                <div className="text-sm text-muted-foreground">
-                  {metadata.duration}
-                </div>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-1">Root Cause</div>
-                <div className="text-sm text-muted-foreground">
-                  {metadata.rootCause}
-                </div>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-2">
-                  Affected Services
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {metadata.affectedServices.map((service) => (
-                    <Badge key={service} variant="outline">
-                      {service}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </div>

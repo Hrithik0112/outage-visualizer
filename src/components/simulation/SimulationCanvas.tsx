@@ -30,14 +30,14 @@ export function SimulationCanvas({
 
   return (
     <div
-      className={`relative border rounded-lg bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden ${className || ""}`}
-      style={{ width, height, minHeight: height }}
+      className={`relative border-2 border-foreground bg-background overflow-hidden mx-auto ${className || ""}`}
+      style={{ width: "100%", maxWidth: width, aspectRatio: `${width} / ${height}`, height: "auto" }}
     >
       {/* SVG overlay for flow lines */}
       <svg
-        className="absolute inset-0 pointer-events-none"
-        width={width}
-        height={height}
+        className="absolute inset-0 pointer-events-none w-full h-full"
+        viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio="xMidYMid meet"
       >
         {step.connections.map((connection, index) => {
           const from = getComponentCenter(connection.from);
@@ -62,8 +62,8 @@ export function SimulationCanvas({
           key={component.id}
           className="absolute"
           style={{
-            left: `${component.position.x}px`,
-            top: `${component.position.y}px`,
+            left: `${(component.position.x / width) * 100}%`,
+            top: `${(component.position.y / height) * 100}%`,
             transform: "translate(-50%, -50%)",
           }}
         >
