@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Github } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { OutageIcon } from "@/components/OutageIcon";
 import { cloudflareOutageData } from "@/data/outages/cloudflare-nov-2025";
 import { awsOutageData } from "@/data/outages/aws-oct-2025";
 import { googleOutageData } from "@/data/outages/google-jun-2025";
@@ -23,15 +25,25 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="border-b border-foreground">
-        <div className="container mx-auto px-6 py-4 max-w-4xl border border-b-0 border-foreground">
+        <div className="container mx-auto px-6 py-4 max-w-4xl border border-y-0 border-foreground">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold">
+            <Link href="/" className="flex items-center gap-2 text-xl font-bold">
+              <OutageIcon className="h-6 w-6" />
               OUTAGE VISUALIZER
             </Link>
             <div className="flex items-center gap-4">
               <div className="text-xs font-mono text-muted-foreground">
                 SYSTEM STATUS: OPERATIONAL
               </div>
+              <a
+                href="https://github.com/Hrithik0112/outage-visualizer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-2 border-foreground p-2 hover:bg-muted transition-colors"
+                aria-label="GitHub repository"
+              >
+                <Github className="h-4 w-4" />
+              </a>
               <ThemeToggle />
             </div>
           </div>
@@ -89,10 +101,28 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-foreground mt-auto">
-        <div className="container mx-auto px-6 py-4 max-w-4xl border border-t-0 border-foreground">
+        <div className="container mx-auto px-6 py-4 max-w-4xl border border-y-0 border-foreground">
           <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
             <div>© 2025 OUTAGE VISUALIZER</div>
-            <div>VERSION 1.0.0</div>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://github.com/Hrithik0112/outage-visualizer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                GITHUB
+              </a>
+              <span>|</span>
+              <a
+                href="https://hrithikdutta.me"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                MADE BY HRITHIK
+              </a>
+            </div>
           </div>
         </div>
       </footer>
