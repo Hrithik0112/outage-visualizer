@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { cloudflareOutageData } from "@/data/outages/cloudflare-nov-2025";
+import { awsOutageData } from "@/data/outages/aws-oct-2025";
 
 const outages = [
   {
     slug: "cloudflare-nov-2025",
     data: cloudflareOutageData,
+  },
+  {
+    slug: "aws-oct-2025",
+    data: awsOutageData,
   },
 ];
 

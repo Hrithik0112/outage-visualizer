@@ -7,13 +7,13 @@ import { SimulationCanvas } from "@/components/simulation/SimulationCanvas";
 import { StepController } from "@/components/simulation/StepController";
 import { StepIndicator } from "@/components/simulation/StepIndicator";
 import { InfrastructureComponent } from "@/components/infrastructure/InfrastructureComponent";
-import { cloudflareOutageData } from "@/data/outages/cloudflare-nov-2025";
+import { awsOutageData } from "@/data/outages/aws-oct-2025";
 
-export default function CloudflareOutagePage() {
+export default function AWSOutagePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const totalSteps = cloudflareOutageData.steps.length;
+  const totalSteps = awsOutageData.steps.length;
 
   // Auto-play functionality
   useEffect(() => {
@@ -59,8 +59,8 @@ export default function CloudflareOutagePage() {
     setIsPlaying(false);
   };
 
-  const currentStepData = cloudflareOutageData.steps[currentStep];
-  const { metadata } = cloudflareOutageData;
+  const currentStepData = awsOutageData.steps[currentStep];
+  const { metadata } = awsOutageData;
 
   return (
     <div className="flex min-h-screen relative">
@@ -91,7 +91,7 @@ export default function CloudflareOutagePage() {
             </button>
           </div>
           <StepIndicator
-            steps={cloudflareOutageData.steps.map((step) => ({
+            steps={awsOutageData.steps.map((step) => ({
               title: step.title,
               description: step.timestamp,
             }))}
@@ -192,7 +192,7 @@ export default function CloudflareOutagePage() {
             <div className="text-sm font-bold font-mono mb-4">
               AFFECTED SERVICES
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {metadata.affectedServices.map((service, index) => (
                 <div
                   key={index}
@@ -221,3 +221,4 @@ export default function CloudflareOutagePage() {
     </div>
   );
 }
+
