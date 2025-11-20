@@ -20,6 +20,7 @@ export const cloudflareOutageData: OutageData = {
       "Database permissions change caused malformed Bot Management configuration file",
     summary:
       "A change to ClickHouse database permissions caused duplicate feature rows, doubling the Bot Management feature file size. This exceeded the 200-feature limit, causing the core proxy to panic and return 5xx errors globally.",
+    rcaLink: "https://blog.cloudflare.com/18-november-2025-outage/",
   },
   steps: [
     {

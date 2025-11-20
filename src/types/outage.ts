@@ -71,6 +71,7 @@ export interface OutageMetadata {
   affectedServices: string[];
   rootCause: string;
   summary: string;
+  rcaLink?: string;
 }
 
 /**

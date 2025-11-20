@@ -141,9 +141,20 @@ export default function AWSOutagePage() {
             <p className="text-muted-foreground text-sm font-mono mb-2">
               {metadata.date}
             </p>
-            <p className="text-sm text-muted-foreground font-mono">
+            <p className="text-sm text-muted-foreground font-mono mb-3">
               {metadata.summary}
             </p>
+            {metadata.rcaLink && (
+              <a
+                href={metadata.rcaLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border-2 border-foreground px-4 py-2 hover:bg-muted transition-colors font-mono text-xs"
+              >
+                READ FULL RCA
+                <ArrowLeft className="h-3 w-3 rotate-180" />
+              </a>
+            )}
           </div>
 
           {/* Compact Step Controller at Top */}
