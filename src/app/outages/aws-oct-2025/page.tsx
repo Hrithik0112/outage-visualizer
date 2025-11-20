@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
 import { SimulationCanvas } from "@/components/simulation/SimulationCanvas";
 import { StepController } from "@/components/simulation/StepController";
 import { StepIndicator } from "@/components/simulation/StepIndicator";
+import { InfrastructureComponent } from "@/components/infrastructure/InfrastructureComponent";
 import { awsOutageData } from "@/data/outages/aws-oct-2025";
 
 export default function AWSOutagePage() {
@@ -117,6 +119,15 @@ export default function AWSOutagePage() {
             </button>
           )}
 
+          {/* Back Button */}
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 mb-6 border-2 border-foreground px-4 py-2 hover:bg-muted transition-colors font-mono text-sm"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            BACK
+          </Link>
+
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-2">
@@ -174,6 +185,36 @@ export default function AWSOutagePage() {
               height={550}
               className="w-full"
             />
+          </div>
+
+          {/* Affected Services */}
+          <div className="border-2 border-foreground p-6">
+            <div className="text-sm font-bold font-mono mb-4">
+              AFFECTED SERVICES
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {metadata.affectedServices.map((service, index) => (
+                <div
+                  key={index}
+                  className="border-2 border-foreground p-4 flex flex-col items-center gap-2"
+                >
+                  <InfrastructureComponent
+                    component={{
+                      id: `service-${index}`,
+                      type: "cloud",
+                      label: service,
+                      position: { x: 0, y: 0 },
+                      state: "error",
+                    }}
+                    size={32}
+                    className="border-0"
+                  />
+                  <div className="text-xs font-mono text-center">
+                    {service}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
