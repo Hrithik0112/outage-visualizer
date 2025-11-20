@@ -9,13 +9,21 @@ import { StepIndicator } from "@/components/simulation/StepIndicator";
 import { InfrastructureComponent } from "@/components/infrastructure/InfrastructureComponent";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { OutageIcon } from "@/components/OutageIcon";
-import { awsOutageData } from "@/data/outages/aws-oct-2025";
+import type { OutageData } from "@/types/outage";
 
-export default function AWSOutagePage() {
+interface OutagePageClientProps {
+  outage: OutageData;
+  slug: string;
+}
+
+export default function OutagePageClient({
+  outage,
+  slug,
+}: OutagePageClientProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const totalSteps = awsOutageData.steps.length;
+  const totalSteps = outage.steps.length;
 
   // Auto-play functionality
   useEffect(() => {
@@ -61,8 +69,8 @@ export default function AWSOutagePage() {
     setIsPlaying(false);
   };
 
-  const currentStepData = awsOutageData.steps[currentStep];
-  const { metadata } = awsOutageData;
+  const currentStepData = outage.steps[currentStep];
+  const { metadata } = outage;
 
   return (
     <div className="flex min-h-screen relative max-w-4xl mx-auto">
@@ -93,7 +101,7 @@ export default function AWSOutagePage() {
             </button>
           </div>
           <StepIndicator
-            steps={awsOutageData.steps.map((step) => ({
+            steps={outage.steps.map((step) => ({
               title: step.title,
               description: step.timestamp,
             }))}
@@ -134,12 +142,13 @@ export default function AWSOutagePage() {
               <Link
                 href="/"
                 className="flex items-center gap-2 text-lg font-bold"
+                aria-label="Outage Visualizer Home"
               >
-                <OutageIcon className="h-5 w-5" />
+                <OutageIcon className="h-5 w-5" aria-hidden="true" />
                 OUTAGE VISUALIZER
               </Link>
               <a
-                href="https://github.com/hrithikdutta/outage-visualizer"
+                href="https://github.com/Hrithik0112/outage-visualizer"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="border-2 border-foreground p-2 hover:bg-muted transition-colors"
@@ -152,7 +161,7 @@ export default function AWSOutagePage() {
           </div>
 
           {/* Header */}
-          <div className="mb-8">
+          <header className="mb-8">
             <div className="flex items-center gap-3 mb-2">
               <h1 className="text-4xl font-bold">
                 {metadata.provider.toUpperCase()} OUTAGE
@@ -161,9 +170,9 @@ export default function AWSOutagePage() {
                 {metadata.severity.toUpperCase()}
               </div>
             </div>
-            <p className="text-muted-foreground text-sm font-mono mb-2">
+            <time className="text-muted-foreground text-sm font-mono mb-2 block" dateTime={metadata.date}>
               {metadata.date}
-            </p>
+            </time>
             <p className="text-sm text-muted-foreground font-mono mb-3">
               {metadata.summary}
             </p>
@@ -178,7 +187,7 @@ export default function AWSOutagePage() {
                 <ArrowLeft className="h-3 w-3 rotate-180" />
               </a>
             )}
-          </div>
+          </header>
 
           {/* Compact Step Controller at Top */}
           <div className="mb-6 border-2 border-foreground p-4">
@@ -187,13 +196,13 @@ export default function AWSOutagePage() {
                 <div className="text-xs font-mono">
                   STEP {currentStep + 1}/{totalSteps}
                 </div>
-                <div className="text-sm font-bold font-mono">
+                <h2 className="text-sm font-bold font-mono">
                   {currentStepData.title}
-                </div>
+                </h2>
                 {currentStepData.timestamp && (
-                  <div className="text-xs text-muted-foreground font-mono">
+                  <time className="text-xs text-muted-foreground font-mono" dateTime={currentStepData.timestamp}>
                     {currentStepData.timestamp}
-                  </div>
+                  </time>
                 )}
               </div>
               <StepController
@@ -206,9 +215,9 @@ export default function AWSOutagePage() {
                 onNext={handleNext}
               />
             </div>
-            <div className="text-xs text-muted-foreground font-mono">
+            <p className="text-xs text-muted-foreground font-mono">
               {currentStepData.description}
-            </div>
+            </p>
           </div>
 
           {/* Full Canvas - Main Focus */}
@@ -222,11 +231,11 @@ export default function AWSOutagePage() {
           </div>
 
           {/* Affected Services */}
-          <div className="border-2 border-foreground p-6">
-            <div className="text-sm font-bold font-mono mb-4">
+          <section className="border-2 border-foreground p-6" aria-labelledby="affected-services-heading">
+            <h2 id="affected-services-heading" className="text-sm font-bold font-mono mb-4">
               AFFECTED SERVICES
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {metadata.affectedServices.map((service, index) => (
                 <div
                   key={index}
@@ -243,13 +252,11 @@ export default function AWSOutagePage() {
                     size={32}
                     className="border-0"
                   />
-                  <div className="text-xs font-mono text-center">
-                    {service}
-                  </div>
+                  <div className="text-xs font-mono text-center">{service}</div>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>

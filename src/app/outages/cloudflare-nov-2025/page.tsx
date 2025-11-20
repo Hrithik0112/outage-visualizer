@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowLeft, Github } from "lucide-react";
 import { SimulationCanvas } from "@/components/simulation/SimulationCanvas";
 import { StepController } from "@/components/simulation/StepController";
 import { StepIndicator } from "@/components/simulation/StepIndicator";
 import { InfrastructureComponent } from "@/components/infrastructure/InfrastructureComponent";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { OutageIcon } from "@/components/OutageIcon";
 import { cloudflareOutageData } from "@/data/outages/cloudflare-nov-2025";
 
 export default function CloudflareOutagePage() {
@@ -63,7 +65,7 @@ export default function CloudflareOutagePage() {
   const { metadata } = cloudflareOutageData;
 
   return (
-    <div className="flex min-h-screen relative">
+    <div className="flex min-h-screen relative max-w-4xl mx-auto">
       {/* Overlay when sidebar is open */}
       {isSidebarOpen && (
         <div
@@ -119,14 +121,35 @@ export default function CloudflareOutagePage() {
             </button>
           )}
 
-          {/* Back Button */}
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 mb-6 border-2 border-foreground px-4 py-2 hover:bg-muted transition-colors font-mono text-sm"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            BACK
-          </Link>
+          {/* Header with Logo and GitHub */}
+          <div className="flex items-center justify-between mb-6">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 border-2 border-foreground px-4 py-2 hover:bg-muted transition-colors font-mono text-sm"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              BACK
+            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/"
+                className="flex items-center gap-2 text-lg font-bold"
+              >
+                <OutageIcon className="h-5 w-5" />
+                OUTAGE VISUALIZER
+              </Link>
+              <a
+                href="https://github.com/hrithikdutta/outage-visualizer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border-2 border-foreground p-2 hover:bg-muted transition-colors"
+                aria-label="GitHub repository"
+              >
+                <Github className="h-4 w-4" />
+              </a>
+              <ThemeToggle />
+            </div>
+          </div>
 
           {/* Header */}
           <div className="mb-8">
