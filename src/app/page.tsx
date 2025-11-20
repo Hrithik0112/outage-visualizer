@@ -23,9 +23,9 @@ const outages = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <header className="border-b border-foreground">
-        <div className="container mx-auto px-6 py-4 max-w-4xl border border-y-0 border-foreground">
+    <div className="h-screen bg-background flex flex-col overflow-hidden">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-foreground">
+        <div className="container mx-auto px-6 py-4 max-w-4xl border-x border-foreground">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-xl font-bold">
               <OutageIcon className="h-6 w-6" />
@@ -50,7 +50,8 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="container mx-auto py-16 px-6 max-w-4xl flex-1 border-x border-foreground">
+      <main className="flex-1 pt-[40px] pb-[40px] overflow-hidden">
+        <div className="h-full container mx-auto py-16 px-6 max-w-4xl border-x border-foreground overflow-y-auto custom-scrollbar">
         <div className="mb-16">
           <h1 className="text-4xl font-bold mb-2">OUTAGE VISUALIZER</h1>
           <div className="text-sm text-muted-foreground">
@@ -97,11 +98,12 @@ export default function Home() {
               </Link>
             );
           })}
+          </div>
         </div>
       </main>
 
-      <footer className="border-t border-foreground mt-auto">
-        <div className="container mx-auto px-6 py-4 max-w-4xl border border-y-0 border-foreground">
+      <footer className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t  border-foreground">
+        <div className="container mx-auto px-6 py-4 max-w-4xl border-x border-foreground">
           <div className="flex items-center justify-between text-xs font-mono text-muted-foreground">
             <div>© 2025 OUTAGE VISUALIZER</div>
             <div className="flex items-center gap-4">
