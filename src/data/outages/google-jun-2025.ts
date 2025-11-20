@@ -1,0 +1,400 @@
+import type { OutageData } from "@/types/outage";
+
+export const googleOutageData: OutageData = {
+  metadata: {
+    id: "google-jun-2025",
+    slug: "google-jun-2025",
+    provider: "Google Cloud",
+    date: "June 12, 2025",
+    severity: "critical",
+    duration: "~7.5 hours (10:51 PDT - 18:18 PDT)",
+    affectedServices: [
+      "API Gateway",
+      "Cloud Run",
+      "Cloud SQL",
+      "Google Compute Engine",
+      "Google BigQuery",
+      "Cloud Firestore",
+      "Cloud Spanner",
+      "Cloud Logging",
+      "Cloud Monitoring",
+      "Cloud Shell",
+      "Google App Engine",
+      "Google Cloud Console",
+      "Identity and Access Management",
+      "Vertex AI",
+      "And 40+ other services",
+    ],
+    rootCause:
+      "Null pointer exception in Service Control caused by blank policy fields triggering unhandled code path",
+    summary:
+      "A policy change with blank fields triggered a null pointer exception in Service Control, causing global API failures across Google Cloud services. The issue affected all regions and took ~7.5 hours to fully resolve.",
+  },
+  steps: [
+    {
+      stepNumber: 1,
+      title: "New Feature Added to Service Control",
+      description:
+        "New quota policy check feature added to Service Control on May 29, 2025",
+      timestamp: "May 29, 2025",
+      components: [
+        {
+          id: "service-control",
+          type: "module",
+          label: "Service Control",
+          position: { x: 700, y: 240 },
+          state: "normal",
+          description: "API management & control plane",
+        },
+        {
+          id: "new-feature",
+          type: "config",
+          label: "New Feature",
+          position: { x: 250, y: 240 },
+          state: "normal",
+          description: "Quota policy checks",
+        },
+      ],
+      connections: [
+        {
+          from: "new-feature",
+          to: "service-control",
+          label: "Code deployed",
+          active: true,
+        },
+      ],
+      highlights: ["service-control", "new-feature"],
+    },
+    {
+      stepNumber: 2,
+      title: "Policy Change with Blank Fields",
+      description:
+        "Policy change inserted into Spanner tables with unintended blank fields",
+      timestamp: "10:45 AM PDT Jun 12",
+      components: [
+        {
+          id: "spanner-table",
+          type: "database",
+          label: "Spanner Table",
+          position: { x: 100, y: 240 },
+          state: "error",
+          description: "Policy metadata",
+        },
+        {
+          id: "policy-change",
+          type: "config",
+          label: "Policy Change",
+          position: { x: 450, y: 240 },
+          state: "error",
+          description: "Contains blank fields",
+        },
+        {
+          id: "global-replication",
+          type: "network",
+          label: "Global Replication",
+          position: { x: 850, y: 240 },
+          state: "propagating",
+          description: "Replicating globally",
+        },
+      ],
+      connections: [
+        {
+          from: "spanner-table",
+          to: "policy-change",
+          label: "Policy inserted",
+          active: true,
+        },
+        {
+          from: "policy-change",
+          to: "global-replication",
+          label: "Replicates globally",
+          active: true,
+        },
+      ],
+      highlights: ["policy-change", "global-replication"],
+    },
+    {
+      stepNumber: 3,
+      title: "Null Pointer Exception Triggered",
+      description:
+        "Service Control exercises code path with blank fields, hits null pointer, binaries crash",
+      timestamp: "10:51 AM PDT Jun 12",
+      components: [
+        {
+          id: "service-control",
+          type: "module",
+          label: "Service Control",
+          position: { x: 200, y: 240 },
+          state: "error",
+          description: "Null pointer crash",
+        },
+        {
+          id: "regional-datastore-1",
+          type: "database",
+          label: "Regional Datastore 1",
+          position: { x: 600, y: 100 },
+          state: "error",
+        },
+        {
+          id: "regional-datastore-2",
+          type: "database",
+          label: "Regional Datastore 2",
+          position: { x: 600, y: 250 },
+          state: "error",
+        },
+        {
+          id: "regional-datastore-3",
+          type: "database",
+          label: "Regional Datastore 3",
+          position: { x: 600, y: 400 },
+          state: "error",
+        },
+      ],
+      connections: [
+        {
+          from: "service-control",
+          to: "regional-datastore-1",
+          label: "Reads blank policy",
+          active: true,
+        },
+        {
+          from: "service-control",
+          to: "regional-datastore-2",
+          label: "Reads blank policy",
+          active: true,
+        },
+        {
+          from: "service-control",
+          to: "regional-datastore-3",
+          label: "Reads blank policy",
+          active: true,
+        },
+      ],
+      highlights: ["service-control"],
+    },
+    {
+      stepNumber: 4,
+      title: "Global Crash Loop",
+      description:
+        "Service Control binaries crash globally, causing 503 errors in all regions",
+      timestamp: "10:51 AM PDT Jun 12",
+      components: [
+        {
+          id: "service-control",
+          type: "module",
+          label: "Service Control",
+          position: { x: 300, y: 240 },
+          state: "error",
+          description: "Crash loop",
+        },
+        {
+          id: "region-1",
+          type: "network",
+          label: "Region 1",
+          position: { x: 500, y: 150 },
+          state: "error",
+          description: "503 errors",
+        },
+        {
+          id: "region-2",
+          type: "network",
+          label: "Region 2",
+          position: { x: 500, y: 300 },
+          state: "error",
+          description: "503 errors",
+        },
+        {
+          id: "region-3",
+          type: "network",
+          label: "Region 3",
+          position: { x: 500, y: 450 },
+          state: "error",
+          description: "503 errors",
+        },
+        {
+          id: "gcp-services",
+          type: "cloud",
+          label: "GCP Services",
+          position: { x: 700, y: 240 },
+          state: "error",
+          description: "API failures",
+        },
+      ],
+      connections: [
+        {
+          from: "service-control",
+          to: "region-1",
+          active: true,
+        },
+        {
+          from: "service-control",
+          to: "region-2",
+          active: true,
+        },
+        {
+          from: "service-control",
+          to: "region-3",
+          active: true,
+        },
+        {
+          from: "region-1",
+          to: "gcp-services",
+          active: true,
+        },
+        {
+          from: "region-2",
+          to: "gcp-services",
+          active: true,
+        },
+        {
+          from: "region-3",
+          to: "gcp-services",
+          active: true,
+        },
+      ],
+      highlights: ["gcp-services"],
+    },
+    {
+      stepNumber: 5,
+      title: "Red Button Deployment",
+      description:
+        "SRE team identifies root cause and deploys red-button to disable the failing code path",
+      timestamp: "11:15 AM PDT Jun 12",
+      components: [
+        {
+          id: "sre-team",
+          type: "query",
+          label: "SRE Team",
+          position: { x: 200, y: 240 },
+          state: "normal",
+          description: "Manual intervention",
+        },
+        {
+          id: "red-button",
+          type: "config",
+          label: "Red Button",
+          position: { x: 500, y: 240 },
+          state: "propagating",
+          description: "Disable code path",
+        },
+        {
+          id: "service-control",
+          type: "module",
+          label: "Service Control",
+          position: { x: 800, y: 240 },
+          state: "propagating",
+          description: "Recovering",
+        },
+      ],
+      connections: [
+        {
+          from: "sre-team",
+          to: "red-button",
+          label: "Deploy",
+          active: true,
+        },
+        {
+          from: "red-button",
+          to: "service-control",
+          label: "Disable path",
+          active: true,
+        },
+      ],
+      highlights: ["red-button", "service-control"],
+    },
+    {
+      stepNumber: 6,
+      title: "Herd Effect in Large Regions",
+      description:
+        "Service Control restarts create herd effect, overloading Spanner infrastructure in us-central-1",
+      timestamp: "11:30 AM - 2:10 PM PDT Jun 12",
+      components: [
+        {
+          id: "service-control",
+          type: "module",
+          label: "Service Control",
+          position: { x: 150, y: 240 },
+          state: "error",
+          description: "Restarting",
+        },
+        {
+          id: "spanner-infra",
+          type: "database",
+          label: "Spanner Infrastructure",
+          position: { x: 520, y: 240 },
+          state: "error",
+          description: "Overloaded",
+        },
+        {
+          id: "us-central-1",
+          type: "network",
+          label: "us-central-1",
+          position: { x: 850, y: 240 },
+          state: "error",
+          description: "Herd effect",
+        },
+      ],
+      connections: [
+        {
+          from: "service-control",
+          to: "spanner-infra",
+          label: "Multiple restarts",
+          active: true,
+        },
+        {
+          from: "spanner-infra",
+          to: "us-central-1",
+          label: "Overload",
+          active: true,
+        },
+      ],
+      highlights: ["spanner-infra", "us-central-1"],
+    },
+    {
+      stepNumber: 7,
+      title: "Full Recovery",
+      description:
+        "Throttling and multi-regional routing implemented, all regions fully recovered",
+      timestamp: "6:18 PM PDT Jun 12",
+      components: [
+        {
+          id: "service-control",
+          type: "module",
+          label: "Service Control",
+          position: { x: 200, y: 240 },
+          state: "resolved",
+        },
+        {
+          id: "spanner-infra",
+          type: "database",
+          label: "Spanner Infrastructure",
+          position: { x: 500, y: 240 },
+          state: "resolved",
+          description: "Throttled",
+        },
+        {
+          id: "gcp-services",
+          type: "cloud",
+          label: "GCP Services",
+          position: { x: 800, y: 240 },
+          state: "resolved",
+          description: "APIs restored",
+        },
+      ],
+      connections: [
+        {
+          from: "service-control",
+          to: "spanner-infra",
+          active: false,
+        },
+        {
+          from: "spanner-infra",
+          to: "gcp-services",
+          active: false,
+        },
+      ],
+      highlights: ["service-control", "gcp-services"],
+    },
+  ],
+};
+
