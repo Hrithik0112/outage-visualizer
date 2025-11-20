@@ -29,6 +29,7 @@ export const googleOutageData: OutageData = {
       "Null pointer exception in Service Control caused by blank policy fields triggering unhandled code path",
     summary:
       "A policy change with blank fields triggered a null pointer exception in Service Control, causing global API failures across Google Cloud services. The issue affected all regions and took ~7.5 hours to fully resolve.",
+    rcaLink: "https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW",
   },
   steps: [
     {

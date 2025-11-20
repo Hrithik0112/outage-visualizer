@@ -24,6 +24,7 @@ export const awsOutageData: OutageData = {
       "Latent race condition in DynamoDB DNS management system caused endpoint resolution failures",
     summary:
       "A race condition in DynamoDB's automated DNS management system caused the deletion of DNS records for the regional endpoint, leading to widespread service failures across AWS services in us-east-1 Region.",
+    rcaLink: "https://aws.amazon.com/message/101925/",
   },
   steps: [
     {
