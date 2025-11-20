@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { cloudflareOutageData } from "@/data/outages/cloudflare-nov-2025";
 import { awsOutageData } from "@/data/outages/aws-oct-2025";
 import { googleOutageData } from "@/data/outages/google-jun-2025";
@@ -27,8 +28,11 @@ export default function Home() {
             <Link href="/" className="text-xl font-bold">
               OUTAGE VISUALIZER
             </Link>
-            <div className="text-xs font-mono text-muted-foreground">
-              SYSTEM STATUS: OPERATIONAL
+            <div className="flex items-center gap-4">
+              <div className="text-xs font-mono text-muted-foreground">
+                SYSTEM STATUS: OPERATIONAL
+              </div>
+              <ThemeToggle />
             </div>
           </div>
         </div>

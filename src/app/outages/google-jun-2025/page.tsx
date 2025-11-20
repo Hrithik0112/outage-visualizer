@@ -7,6 +7,7 @@ import { SimulationCanvas } from "@/components/simulation/SimulationCanvas";
 import { StepController } from "@/components/simulation/StepController";
 import { StepIndicator } from "@/components/simulation/StepIndicator";
 import { InfrastructureComponent } from "@/components/infrastructure/InfrastructureComponent";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { googleOutageData } from "@/data/outages/google-jun-2025";
 
 export default function GoogleOutagePage() {
@@ -136,6 +137,9 @@ export default function GoogleOutagePage() {
               </h1>
               <div className="text-xs font-mono border-2 border-foreground px-2 py-1">
                 {metadata.severity.toUpperCase()}
+              </div>
+              <div className="ml-auto">
+                <ThemeToggle />
               </div>
             </div>
             <p className="text-muted-foreground text-sm font-mono mb-2">
