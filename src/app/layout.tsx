@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import FeedbackWidget from "@/components/FeedbackWidget";
 
 export const viewport = {
   themeColor: [
@@ -102,6 +103,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <FeedbackWidget projectId="7" />
         </ThemeProvider>
       </body>
     </html>
